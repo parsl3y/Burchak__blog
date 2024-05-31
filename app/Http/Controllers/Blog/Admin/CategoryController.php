@@ -2,20 +2,36 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
-/*use App\Http\Controllers\Controller;*/
-use Illuminate\Http\Request;
+//use App\Http\Controllers\Controller;
 use App\Models\BlogCategory;
+use App\Repositories\BlogCategoryRepository;
 use Illuminate\Support\Str;
+//use Illuminate\Http\Request;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Http\Requests\BlogCategoryCreateRequest;
+
 class CategoryController extends BaseController
 {
+    /**
+     * @var BlogCategoryRepository
+     */
+    private $blogCategoryRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $paginator = BlogCategory::paginate(5);
+        //
+        //dd(__METHOD__);
+        //$paginator = BlogCategory::paginate(5);
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
+
         return view('blog.admin.categories.index', compact('paginator'));
     }
 
@@ -24,8 +40,10 @@ class CategoryController extends BaseController
      */
     public function create()
     {
+        //
+        //dd(__METHOD__);
         $item = new BlogCategory();
-        $categoryList = BlogCategory::all();
+        $categoryList = $this->blogCategoryRepository->getForComboBox(); //BlogCategory::all();
 
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
     }
@@ -35,10 +53,9 @@ class CategoryController extends BaseController
      */
     public function store(BlogCategoryCreateRequest $request)
     {
+        //
+        //dd(__METHOD__);
         $data = $request->input(); //отримаємо масив даних, які надійшли з форми
-        if (empty($data['slug'])) { //якщо псевдонім порожній
-            $data['slug'] = Str::slug($data['title']); //генеруємо псевдонім
-        }
 
         $item = (new BlogCategory())->create($data); //створюємо об'єкт і додаємо в БД
 
@@ -51,6 +68,7 @@ class CategoryController extends BaseController
                 ->withErrors(['msg' => 'Помилка збереження'])
                 ->withInput();
         }
+
     }
 
     /**
@@ -58,16 +76,20 @@ class CategoryController extends BaseController
      */
     public function show(string $id)
     {
-        dd(__METHOD__);
+        //
+        //dd(__METHOD__);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $item = BlogCategory::findOrFail($id);
-        $categoryList = BlogCategory::all();
+        $item = $this->blogCategoryRepository->getEdit($id);
+        if (empty($item)) {                         //помилка, якщо репозиторій не знайде наш ід
+            abort(404);
+        }
+        $categoryList = $this->blogCategoryRepository->getForComboBox($item->parent_id);
 
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
     }
@@ -77,7 +99,9 @@ class CategoryController extends BaseController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        $item = BlogCategory::find($id);
+        //
+        //dd(__METHOD__);
+        $item = $this->blogCategoryRepository->getEdit($id); //BlogCategory::find($id);
         if (empty($item)) { //якщо ід не знайдено
             return back() //redirect back
             ->withErrors(['msg' => "Запис id=[{$id}] не знайдено"]) //видати помилку
@@ -85,9 +109,6 @@ class CategoryController extends BaseController
         }
 
         $data = $request->all(); //отримаємо масив даних, які надійшли з форми
-        if (empty($data['slug'])) { //якщо псевдонім порожній
-            $data['slug'] = Str::slug($data['title']); //генеруємо псевдонім
-        }
 
         $result = $item->update($data);  //оновлюємо дані об'єкта і зберігаємо в БД
 
@@ -107,6 +128,7 @@ class CategoryController extends BaseController
      */
     public function destroy(string $id)
     {
-        dd(__METHOD__);
+        //
+        //dd(__METHOD__);
     }
 }
