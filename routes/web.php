@@ -3,6 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestTestController;
 
+$groupData = [
+    'namespace' => 'App\Http\Controllers\Blog\Admin',
+    'prefix' => 'admin/blog',
+];
+Route::group($groupData, function () {
+    //BlogCategory
+    $methods = ['index','edit','store','update','create',];
+    Route::resource('categories', CategoryController::class)
+        ->only($methods)
+        ->names('blog.admin.categories');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
