@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestTestController;
-
+use App\Http\Controllers\DiggingDeeperController;
 $groupData = [
     'namespace' => 'App\Http\Controllers\Blog\Admin',
     'prefix' => 'admin/blog',
@@ -22,7 +22,13 @@ Route::group($groupData, function () {
 Route::get('/', function () {
     return view('welcome');
 });
+Route::group(['prefix' => 'digging_deeper'], function () {
 
+    Route::get('collections', [DiggingDeeperController::class, 'collections'])
+
+        ->name('digging_deeper.collections');
+
+});
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
