@@ -14,4 +14,12 @@ class PostController extends BaseController
 
         return $posts;
     }
+    public function show(string $id)
+    {
+        $item = BlogPost::with(['user', 'category'])->get()->find($id);
+        if (empty($item)) {
+            abort(404);
+        }
+        return $item;
+    }
 }

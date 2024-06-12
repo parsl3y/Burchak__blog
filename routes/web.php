@@ -55,4 +55,4 @@ Route::group($groupData, function () {
 
 //API
 Route::get('api/blog/posts', [\App\Http\Controllers\Api\Blog\PostController::class, 'index']);
-/*Route::get('api/blog/posts/{id}', [\App\Http\Controllers\Api\Blog\PostController::class, 'show']);*/
+Route::get('api/blog/posts/{id}', [\App\Http\Controllers\Api\Blog\PostController::class, 'show']);
