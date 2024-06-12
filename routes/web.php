@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RestTestController;
+use App\Http\Controllers\Api\Blog\PostController;
 use App\Http\Controllers\DiggingDeeperController;
+use App\Http\Controllers\RestTestController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,4 +55,4 @@ Route::group($groupData, function () {
 
 //API
 Route::get('api/blog/posts', [\App\Http\Controllers\Api\Blog\PostController::class, 'index']);
-Route::get('api/blog/posts/{id}', [\App\Http\Controllers\Api\Blog\PostController::class, 'show']);
+/*Route::get('api/blog/posts/{id}', [\App\Http\Controllers\Api\Blog\PostController::class, 'show']);*/
