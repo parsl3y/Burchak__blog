@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\Blog\PostController;
+use App\Http\Controllers\Api\Blog\PostController as BlogPostController;
 use App\Http\Controllers\DiggingDeeperController;
 use App\Http\Controllers\RestTestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Blog\Admin\PostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,6 +54,3 @@ Route::group($groupData, function () {
         ->names('blog.admin.posts');
 });
 
-//API
-Route::get('api/blog/posts', [\App\Http\Controllers\Api\Blog\PostController::class, 'index']);
-Route::get('api/blog/posts/{id}', [\App\Http\Controllers\Api\Blog\PostController::class, 'show']);

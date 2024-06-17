@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
-use App\Repositories\BlogPostRepository;
-use App\Repositories\BlogCategoryRepository;
-use App\Http\Requests\BlogPostUpdateRequest;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\BlogPost;
 use App\Http\Requests\BlogPostCreateRequest;
+use App\Http\Requests\BlogPostUpdateRequest;
 use App\Jobs\BlogPostAfterCreateJob;
 use App\Jobs\BlogPostAfterDeleteJob;
+use App\Models\BlogPost;
+use App\Repositories\BlogCategoryRepository;
+use App\Repositories\BlogPostRepository;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class PostController extends BaseController
 {
